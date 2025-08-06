@@ -11,7 +11,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// DB接続をリトライする機能（dbconn.goから統合）
+// DB接続をリトライ
 func connectWithRetry(driver, dsn string, maxRetries int, waitSec int) (*sql.DB, error) {
 	var db *sql.DB
 	var err error

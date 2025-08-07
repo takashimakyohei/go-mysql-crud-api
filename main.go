@@ -51,6 +51,9 @@ func main() {
 		w.Write([]byte("ok"))
 	})
 
+	// ハンズオン用ルーティングを別ファイルから登録
+	HandsonRoutes()
+
 	log.Println("APIサーバー起動 :8080")
 	http.ListenAndServe(":8080", nil)
 }

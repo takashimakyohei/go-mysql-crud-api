@@ -22,6 +22,7 @@ services:
       DB_NAME: sampledb
     ports:
       - "8080:8080"
+    volumes:
+      - .:/app  # ホストのディレクトリをコンテナにマウント
 volumes:
   db-data:
-

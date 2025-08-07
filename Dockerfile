@@ -1,13 +1,11 @@
-FROM golang:1.22-alpine
-
-# gitと必要な依存関係をインストール
-RUN apk add --no-cache git
+FROM golang:1.22
 
 WORKDIR /app
 COPY . .
 
-# 依存関係の解決とビルド
+# 依存関係の解決とairのインストール
 RUN go mod tidy
-RUN go build -o main .
+RUN go install github.com/cosmtrek/air@v1.44.0
 
-CMD ["./main"]
+# 起動時に依存関係を解決してからairを実行
+CMD sh -c "go get github.com/go-sql-driver/mysql && go mod tidy && air"

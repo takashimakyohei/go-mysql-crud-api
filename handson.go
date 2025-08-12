@@ -31,4 +31,20 @@ func HandsonRoutes() {
 			fmt.Fprintf(w, "入力された値は10以下です: %d\n", value)
 		}
 	})
+
+	http.HandleFunc("/pointer", func(w http.ResponseWriter, r *http.Request) {
+        valueStr := r.URL.Query().Get("value")
+        i, err := strconv.Atoi(valueStr)
+        if err != nil {
+            fmt.Fprintf(w, "エラー: 整数値を入力してください\n")
+            return
+        }
+
+        p := &i // iのアドレスをpに代入
+        fmt.Fprintf(w, "初期値: i = %d, *p = %d\n", i, *p)
+
+        *p = *p + 10 // ポインタ経由で値を変更
+        fmt.Fprintf(w, "変更後: i = %d, *p = %d\n", i, *p)
+    })
+
 }

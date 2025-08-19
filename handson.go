@@ -58,6 +58,8 @@ func HandsonRoutes() {
 		fruits = append(fruits, "orange")
 
 		fmt.Fprintf(w, "fruits: %v\n", fruits)
+		// スライスの特定要素にアクセス
+        fmt.Fprintf(w, "index 0 value is: %v\n", fruits[0])
         fmt.Fprintf(w, "fruits: %v\n", fruits2)
 		fmt.Fprintf(w, "len: %d\n", len(fruits))
 	})

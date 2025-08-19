@@ -47,4 +47,19 @@ func HandsonRoutes() {
         fmt.Fprintf(w, "変更後: i = %d, *p = %d\n", i, *p)
     })
 
+	http.HandleFunc("/slice", func(w http.ResponseWriter, r *http.Request) {
+		// スライスの作成(var)
+		var fruits []string
+
+		// スライスの作成
+		fruits2 := []string{"grape", "banana"}
+
+		// 要素追加
+		fruits = append(fruits, "orange")
+
+		fmt.Fprintf(w, "fruits: %v\n", fruits)
+        fmt.Fprintf(w, "fruits: %v\n", fruits2)
+		fmt.Fprintf(w, "len: %d\n", len(fruits))
+	})
 }
+

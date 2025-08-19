@@ -63,5 +63,36 @@ func HandsonRoutes() {
         fmt.Fprintf(w, "fruits: %v\n", fruits2)
 		fmt.Fprintf(w, "len: %d\n", len(fruits))
 	})
-}
 
+	http.HandleFunc("/struct", func(w http.ResponseWriter, r *http.Request) {
+        type Student struct {
+            Number int
+            Name string
+        }
+
+        students := []Student{
+            {Number: 1, Name: "Alice"},
+            {Number: 2, Name: "Bob"},
+        }
+
+        // 構造体スライスの出力
+        fmt.Fprintf(w, "%v\n", students)
+        for _, student := range students {
+            fmt.Fprintf(w, "Name: %s\n", student.Name)
+        }
+
+        // 構造体の追加
+        students = append(students, Student{Number: 3, Name: "Carol"})
+        fmt.Fprintf(w, "追加後: %v\n", students)
+
+        // 構造体のフィールド更新
+        students[1].Name = "Bob Jr."
+        fmt.Fprintf(w, "2番目の生徒の名前を更新: %v\n", students[1])
+
+        // 構造体の比較
+        equal := students[0] == students[1]
+        fmt.Fprintf(w, "1番目と2番目は同じ？: %v\n", equal)
+
+
+    })
+}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+    "go-mysql-crud/user"
 )
 
 func HandsonRoutes() {
@@ -130,5 +131,11 @@ func HandsonRoutes() {
         delete(prices, "banana")
         fmt.Fprintf(w, "削除後: %+v\n", prices)
     })
-}
 
+	http.HandleFunc("/receiver", func(w http.ResponseWriter, r *http.Request) {
+		u := user.User{"Taro", 25}
+		// レシーバ付きメソッドの呼び出し
+        fmt.Fprintf(w, "名前: %s\n", u.GetName())
+        fmt.Fprintf(w, "年齢: %s\n", u.GetAge())
+	})
+}

@@ -137,5 +137,12 @@ func HandsonRoutes() {
 		// レシーバ付きメソッドの呼び出し
         fmt.Fprintf(w, "名前: %s\n", u.GetName())
         fmt.Fprintf(w, "年齢: %s\n", u.GetAge())
+
+        u.HaveBirthday()
+        fmt.Fprintf(w, "誕生日を迎えた後の年齢（値レシーバ）: %s\n", u.GetAge())
+
+        u.HaveBirthdayPointer()
+        fmt.Fprintf(w, "誕生日を迎えた後の年齢（ポインタレシーバ）: %s\n", u.GetAge())
+
 	})
 }

@@ -102,4 +102,33 @@ func HandsonRoutes() {
 
 
     })
+
+    http.HandleFunc("/map", func(w http.ResponseWriter, r *http.Request) {
+        // 要素が入ったmapの作成
+        prices := map[string]int{
+            "apple": 120,
+            "banana": 80,
+        }
+        fmt.Fprintf(w, "初期map: %+v\n", prices)
+
+        // 空のmapの作成
+        emptymap := map[string]int{}
+        fmt.Fprintf(w, "初期map: %+v\n", emptymap)
+
+        prices["orange"] = 150 // 追加
+        prices["banana"] = 90  // 更新
+        fmt.Fprintf(w, "追加・更新後: %+v\n", prices)
+
+        fruit := "apple"
+        price, exists := prices[fruit]
+        if exists {
+            fmt.Fprintf(w, "%sの値段: %d\n", fruit, price)
+        } else {
+            fmt.Fprintf(w, "%sは登録されていません\n", fruit)
+        }
+
+        delete(prices, "banana")
+        fmt.Fprintf(w, "削除後: %+v\n", prices)
+    })
 }
+

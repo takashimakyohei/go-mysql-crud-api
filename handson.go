@@ -62,6 +62,13 @@ func HandsonRoutes() {
         fmt.Fprintf(w, "index 0 value is: %v\n", fruits[0])
         fmt.Fprintf(w, "fruits: %v\n", fruits2)
 		fmt.Fprintf(w, "len: %d\n", len(fruits))
+
+        // あらかじめ容量を指定してスライスを作成
+        // tip: スライスの容量を指定することで、メモリの再割り当てを減らすことができる
+		b := make([]int, 0, 5)
+		b = append(b, 1, 2, 3, 4, 5)
+        b = append(b, 1, 2)
+		fmt.Fprintf(w, "b: len=%d cap=%d %v\n", len(b), cap(b), b)
 	})
 
 	http.HandleFunc("/struct", func(w http.ResponseWriter, r *http.Request) {

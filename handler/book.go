@@ -69,7 +69,7 @@ func (h *Handler) Show(w http.ResponseWriter, r *http.Request, id string) {
 }
 
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
-	req := dto.CreateRequestParam{}
+	req := dto.RequestParam{}
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -90,8 +90,31 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request, id string) {
+
+	bookID, err := strconv.Atoi(id)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	req := dto.RequestParam{}
+	err = json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	repo := repo.NewBookRepository(h.DB)
+	uc := usecase.NewUpdateBookUsecase(repo)
+	book, err := uc.Execute(bookID, req)
+	if err != nil {
+		http.Error(w, "更新に失敗しました", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Book update"))
+	json.NewEncoder(w).Encode(book)
 }
 
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request, id string) {

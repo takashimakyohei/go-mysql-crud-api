@@ -11,6 +11,7 @@ type (
 		ListBook() ([]*entity.Book, error)
 		GetBook(id int) (*entity.Book, error)
 		CreateBook(*entity.Book) (*entity.Book, error)
+		UpdateBook(*entity.Book) (*entity.Book, error)
 	}
 	BookRepository struct {
 		DB *sql.DB
@@ -76,5 +77,16 @@ func (r *BookRepository) CreateBook(b *entity.Book) (*entity.Book, error) {
 	b.ID = int(id)
 
 	// 完成したEntityを返す
+	return b, nil
+}
+
+func (r *BookRepository) UpdateBook(b *entity.Book) (*entity.Book, error) {
+	_, err := r.DB.Exec(
+		"UPDATE books SET title=?, author=? WHERE id=?",
+		b.Title, b.Author, b.ID,
+	)
+	if err != nil {
+		return nil, err
+	}
 	return b, nil
 }

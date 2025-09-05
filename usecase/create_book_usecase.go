@@ -14,7 +14,7 @@ func NewCreateBookUsecase(repo repository.IBookRepository) *CreateBookUsecase {
 	return &CreateBookUsecase{irepo: repo}
 }
 
-func (uc *CreateBookUsecase) Execute(req dto.CreateRequestParam) (*entity.Book, error) {
+func (uc *CreateBookUsecase) Execute(req dto.RequestParam) (*entity.Book, error) {
 	entity := &entity.Book{
 		Title:  req.Title,
 		Author: req.Author,

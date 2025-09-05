@@ -13,11 +13,6 @@ func NewListBookUsecase(repo repository.IBookRepository) *ListBookUsecase {
 	return &ListBookUsecase{irepo: repo}
 }
 
-func (uc *ListBookUsecase) Execute() ([]entity.Book, error) {
-	books, err := uc.irepo.ListBook()
-	if err != nil {
-		return nil, err
-	}
-
-	return books, nil
+func (uc *ListBookUsecase) Execute() ([]*entity.Book, error) {
+	return uc.irepo.ListBook()
 }

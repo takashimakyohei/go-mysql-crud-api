@@ -10,6 +10,7 @@ type (
 	IBookRepository interface {
 		ListBook() ([]*entity.Book, error)
 		GetBook(id int) (*entity.Book, error)
+		CreateBook(*entity.Book) (*entity.Book, error)
 	}
 	BookRepository struct {
 		DB *sql.DB
@@ -42,7 +43,7 @@ func (r *BookRepository) ListBook() ([]*entity.Book, error) {
 }
 
 func (r *BookRepository) GetBook(id int) (*entity.Book, error) {
-	var b entity.Book
+	b := entity.Book{}
 	row := r.DB.QueryRow(`
         SELECT id, title, author, created_at, updated_at
         FROM books
@@ -55,4 +56,25 @@ func (r *BookRepository) GetBook(id int) (*entity.Book, error) {
 	}
 
 	return &b, nil
+}
+
+func (r *BookRepository) CreateBook(b *entity.Book) (*entity.Book, error) {
+	// Insert
+	result, err := r.DB.Exec(
+		"INSERT INTO books (title, author) VALUES (?, ?)",
+		b.Title, b.Author,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	// Insert後の自動採番IDを取得
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+	b.ID = int(id)
+
+	// 完成したEntityを返す
+	return b, nil
 }

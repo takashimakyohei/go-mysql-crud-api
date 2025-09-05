@@ -3,15 +3,18 @@ package book
 import (
 	"database/sql"
 	"encoding/json"
+	dto "go-mysql-crud/dto"
 	repo "go-mysql-crud/infra/repository"
 	usecase "go-mysql-crud/usecase"
 	"net/http"
 	"strconv"
 )
 
-type Handler struct {
-	DB *sql.DB
-}
+type (
+	Handler struct {
+		DB *sql.DB
+	}
+)
 
 func (h *Handler) Index(w http.ResponseWriter, r *http.Request) {
 	bookRepo := repo.NewBookRepository(h.DB)
@@ -66,8 +69,24 @@ func (h *Handler) Show(w http.ResponseWriter, r *http.Request, id string) {
 }
 
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
+	req := dto.CreateRequestParam{}
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	repo := repo.NewBookRepository(h.DB)
+	uc := usecase.NewCreateBookUsecase(repo)
+	book, err := uc.Execute(req)
+	if err != nil {
+		http.Error(w, "作成に失敗しました", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Book create"))
+	json.NewEncoder(w).Encode(book)
 }
 
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request, id string) {

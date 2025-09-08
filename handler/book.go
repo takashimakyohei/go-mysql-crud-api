@@ -118,6 +118,20 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request, id string) {
 }
 
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request, id string) {
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Book delete"))
+	bookID, err := strconv.Atoi(id)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	repo := repo.NewBookRepository(h.DB)
+	uc := usecase.NewDeleteBookUsecase(repo)
+
+	err = uc.Execute(bookID)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }

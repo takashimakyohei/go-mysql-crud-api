@@ -12,6 +12,7 @@ type (
 		GetBook(id int) (*entity.Book, error)
 		CreateBook(*entity.Book) (*entity.Book, error)
 		UpdateBook(*entity.Book) (*entity.Book, error)
+		DeleteBook(id int) error
 	}
 	BookRepository struct {
 		DB *sql.DB
@@ -89,4 +90,15 @@ func (r *BookRepository) UpdateBook(b *entity.Book) (*entity.Book, error) {
 		return nil, err
 	}
 	return b, nil
+}
+
+func (r *BookRepository) DeleteBook(id int) error {
+	_, err := r.DB.Exec(
+		"DELETE FROM books WHERE id=?",
+		id,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
 }

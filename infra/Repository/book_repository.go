@@ -2,24 +2,14 @@ package repository
 
 import (
 	"database/sql"
+	"go-mysql-crud/domain/iface"
 	entity "go-mysql-crud/domain/model/book"
 	"log"
 )
 
-type (
-	IBookRepository interface {
-		ListBook() ([]*entity.Book, error)
-		GetBook(id int) (*entity.Book, error)
-		CreateBook(*entity.Book) (*entity.Book, error)
-		UpdateBook(*entity.Book) (*entity.Book, error)
-		DeleteBook(id int) error
-	}
-	BookRepository struct {
-		DB *sql.DB
-	}
-)
+type BookRepository struct{ DB *sql.DB }
 
-func NewBookRepository(db *sql.DB) IBookRepository {
+func NewBookRepository(db *sql.DB) iface.IBookRepository {
 	return &BookRepository{DB: db}
 }
 

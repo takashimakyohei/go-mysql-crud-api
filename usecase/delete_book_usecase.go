@@ -1,14 +1,14 @@
 package usecase
 
 import (
-	"go-mysql-crud/infra/repository"
+	"go-mysql-crud/domain/iface"
 )
 
 type DeleteBookUsecase struct {
-	irepo repository.IBookRepository
+	irepo iface.IBookRepository
 }
 
-func NewDeleteBookUsecase(repo repository.IBookRepository) *DeleteBookUsecase {
+func NewDeleteBookUsecase(repo iface.IBookRepository) *DeleteBookUsecase {
 	return &DeleteBookUsecase{irepo: repo}
 }
 

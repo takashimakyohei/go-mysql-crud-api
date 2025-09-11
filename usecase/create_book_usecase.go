@@ -1,16 +1,16 @@
 package usecase
 
 import (
+	"go-mysql-crud/domain/iface"
 	entity "go-mysql-crud/domain/model/book"
 	dto "go-mysql-crud/dto"
-	"go-mysql-crud/infra/repository"
 )
 
 type CreateBookUsecase struct {
-	irepo repository.IBookRepository
+	irepo iface.IBookRepository
 }
 
-func NewCreateBookUsecase(repo repository.IBookRepository) *CreateBookUsecase {
+func NewCreateBookUsecase(repo iface.IBookRepository) *CreateBookUsecase {
 	return &CreateBookUsecase{irepo: repo}
 }
 
